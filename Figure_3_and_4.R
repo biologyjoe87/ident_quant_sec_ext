@@ -16,22 +16,7 @@ spring.A = -rbind(c(1.28, -0.15, -0.10, -0.22, 0.16, -0.12),
                   c(0.39, 0.15, 0.82, 0.72, 0.8, -0.78),
                   c(0.02, 0.18, 0.05, 0.13, 0.57, 0.56))
 
-normalized.spring.A = spring.A
-
-for (i in 1:nrow(spring.A)){
-  
-  for (j in 1:ncol(spring.A)){
-    
-    normalized.spring.A[i,j] = (-spring.A[i,j] * spring.b[j] ) / ( spring.A[j,j] * spring.b[i] )
-    
-  }
-  
-}
-
 interest.spp = c(1,2,3,5,6)
-
-# A = normalized.spring.A[interest.spp, interest.spp]
-# b = rep(1,5)
 
 A = spring.A[interest.spp, interest.spp]
 b = spring.b[interest.spp]
@@ -591,6 +576,66 @@ ggplot(total_long, aes(x = Mechanism, y = IGR, fill = IGR_Type)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) + 
   scale_fill_manual(values = c("minusi.comm.IGR" = "#fec488", "secext.comm.IGR" = "#e44f64"),  
                     labels = c("minusi.comm.IGR" = "-T. pratense", "secext.comm.IGR" = "-T. repens")) +
+  
+  # Add y-axis break from 3 to 10
+  #scale_y_break(c(3, 10), scales = "fixed") +  
+  
+  # Manually adjust tick marks before and after the break
+  # scale_y_continuous(
+  #   breaks = c(seq(-2, 3, by = 1), seq(10, max(total_long$IGR), by = 1))
+  # ) +
+  
+  theme(
+    axis.text = element_text(size = 18),
+    axis.title = element_text(size = 18, face = "bold"),   
+    plot.title = element_text(size = 18, face = "bold"), 
+    legend.position = "top",
+    legend.text = element_text(size = 18),
+    legend.title = element_text(size = 18),
+    
+    # Remove the right y-axis (duplicate y-axis labels)
+    axis.text.y.right = element_blank(),
+    axis.ticks.y.right = element_blank()
+  )
+
+baseline = total.df[1,c(2,3)]
+comp.on.tpratense = colSums(total.df[c(4,7,10),c(2,3)])
+facil.on.tpratense = (total.df[c(13),c(2,3)])
+comp.on.competitors = colSums(total.df[c(3,6,9,12),c(2,3)])
+facil.on.competitors = colSums(total.df[c(2,5,8,11),c(2,3)])
+
+new.df = data.frame(Mechanism = c('Baseline', 'Competition on T. pratense', 'Facilitation on T. pratense', 'Competition on competitors', 'Facilitation on competitors'), minus.i.comm.IGR = as.numeric(c(baseline[1], comp.on.tpratense[1], facil.on.tpratense[1], comp.on.competitors[1], facil.on.competitors[1])), secext.comm.IGR = as.numeric(c(baseline[2], comp.on.tpratense[2], facil.on.tpratense[2], comp.on.competitors[2], facil.on.competitors[2])))
+
+total_long <- new.df %>%
+  pivot_longer(cols = c(minus.i.comm.IGR, secext.comm.IGR), 
+               names_to = "IGR_Type", values_to = "IGR")
+
+cumulative_igr <- total_long %>%
+  group_by(IGR_Type) %>%
+  summarize(IGR = sum(IGR), .groups = "drop") %>%
+  mutate(Mechanism = "Cumulative IGR")  # Add "Cumulative IGR" as a new row
+
+# Append Cumulative IGR row to the original dataframe
+total_long <- bind_rows(total_long, cumulative_igr)
+
+# Ensure "Cumulative IGR" is at the top and "Baseline" is at the bottom
+mechanism_levels <- c("Cumulative IGR", 'Competition on T. pratense', 'Facilitation on T. pratense', 'Competition on competitors', 'Facilitation on competitors', "Baseline")
+total_long$Mechanism <- factor(total_long$Mechanism, levels = mechanism_levels, ordered = TRUE)
+
+# Get the position (index) of "Cumulative IGR" for the vertical line
+cumulative_igr_position <- which(levels(total_long$Mechanism) == "Cumulative IGR")
+
+# Plot
+ggplot(total_long, aes(x = Mechanism, y = IGR, fill = IGR_Type)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7, color = "black") +
+  coord_flip() +  
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +
+  geom_vline(xintercept = cumulative_igr_position + 0.5, linetype = "dotted", color = "black", size = 0.7) +
+  theme_classic() +  
+  labs(x = "Mechanism", y = "Invasion Growth Rate", fill = "Community") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) + 
+  scale_fill_manual(values = c("minus.i.comm.IGR" = "#fec488", "secext.comm.IGR" = "#e44f64"),  
+                    labels = c("minus.i.comm.IGR" = "-T. pratense", "secext.comm.IGR" = "-T. repens")) +
   
   # Add y-axis break from 3 to 10
   #scale_y_break(c(3, 10), scales = "fixed") +  
