@@ -1,5 +1,5 @@
 ### Figure 1
-### Author: Joe Brennan test
+### Author: Joe Brennan
 
 library('tidyverse')
 library(igraph)
