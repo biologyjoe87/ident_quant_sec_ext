@@ -1,8 +1,9 @@
 ### Figure 1
 ### Author: Joe Brennan
 
-library('tidyverse')
-library(igraph)
+# load in required libraries
+require('tidyverse')
+require(igraph)
 
 # First bit of code from Van Dyke et al, 2022 code
 
@@ -69,6 +70,7 @@ plant.IS = function(A,g,s,lambda, tolerance=1e-14){
 # s = s[c(1,3,4)]
 # lambda = lambda.ambient[c(1,3,4)]
 
+# Empirically-parametrized values from Van Dyke et al
 A = rbind(c(0.27290462, 0.9415389, 0.5590646),
           c(0.13755487, 0.9483990,0.1599514),
           c(0.08483079, 1.0221670, 0.4161495))
@@ -158,6 +160,7 @@ alternate.disassembly.graph = function(IS){
 # Create disassembly graph for the specific model
 out=alternate.disassembly.graph(IS)
 
+# plotter for the community disassembly graph
 plot.disassembly.graph=function(out,clear.out=c(),bend.factor=0.75,cols,impermanent.weight=0.172549,multiple.invasion.edge.weight=0.5,vlx=1,elx=1){
   
   IG=out$adj.mat
@@ -299,6 +302,7 @@ for (i in 2:nrow(mat)){
   if (i==75) mat[i,1]=0 # extinction event
 }
 
+# prepare simulated values for plotting
 mat = cbind(mat, 1:iterations)
 colnames(mat) = c("A. wrangelianus", "H. murinum", "P. erecta", 'Iterations')
 
@@ -344,6 +348,7 @@ for (i in 2:nrow(mat)){
   if (i==50) mat[i,3]=0
 }
 
+# prepare simulated values for plotting
 mat = cbind(mat, 1:iterations)
 colnames(mat) = c("A. wrangelianus", "H. murinum", "P. erecta", 'Iterations')
 

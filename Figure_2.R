@@ -31,6 +31,7 @@
 # s = s[c(1,3,4)]
 # lambda = lambda.ambient[c(1,3,4)]
 
+# empirically parameterized values from Van Dyke et al
 A = rbind(c(0.27290462, 0.9415389, 0.5590646),
           c(0.13755487, 0.9483990,0.1599514),
           c(0.08483079, 1.0221670, 0.4161495))
@@ -214,10 +215,12 @@ inv.df$Mechanism <- factor(inv.df$Mechanism, levels = rev(c("Baseline and other 
 # Create cumulative sum 
 inv.df$cumulative_IGR_backwards <- cumsum(inv.df$IGR)  # Direct cumulative sum calculation
 
+# prepare dataframe for plotting
 total.df = as.data.frame(inv.df$Mechanism)
 colnames(total.df) = 'Mechanism'
 total.df$minusi.comm.IGR = inv.df$IGR
 
+# find shared mechanisms between communities
 matchindices = inv.df$Mechanism %in% df$Mechanism
 alter = numeric(length(matchindices))
 
@@ -227,10 +230,10 @@ igr_indices = seq_along(df$IGR)
 alter[trueindices] = df$IGR[seq_along(trueindices)]
 total.df$secext.comm.IGR = alter
 
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(stringr)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(stringr)
 
 # Reshape the dataframe to a long format
 total_long <- total.df %>%

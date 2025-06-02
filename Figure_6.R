@@ -3,7 +3,7 @@
 
 # Code adapted from Shoemaker et al, 2020
 
-library(deSolve)
+require(deSolve)
 
 # A. decomposition of C2 in -C2 comm
 
@@ -335,7 +335,7 @@ C2_delta_R_omega_JC1 = C2_r_bar-(C2_delta_0+C2_delta_R+C2_delta_omega+C2_delta_J
 # ----------------------------------------------------------------------------------------------------
 
 # Load ggplot2 library
-library(ggplot2)
+require(ggplot2)
 
 # only consider non-zero
 C2_final_mechanisms <- c(C2_delta_R_JC1, C2_delta_JC1, C2_delta_omega, C2_delta_R, C2_delta_0)
@@ -360,26 +360,26 @@ inv.df$Mechanism <- factor(inv.df$Mechanism, levels = c("Interaction between res
 # calculate cumulative sum
 inv.df$cumulative_IGR_backwards <- rev(cumsum(rev(inv.df$IGR)))
 
-# plot
-ggplot(inv.df, aes(x = Mechanism, y = IGR)) +
-  geom_bar(stat = "identity", width = 0.7, fill = "lightgrey", color = "black") +
-  coord_flip() +  
-  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +
-  geom_line(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, group = 1), color = "black", size = 1) +  # Add cumulative sum line starting from baseline
-  # geom_text(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, label = round(cumulative_IGR_backwards, 2)), 
-  #           color = "black", hjust = -0.8, size = 4.5) +  # Add labels next to each point on the cumulative sum line
-  geom_point(aes(x = as.numeric(Mechanism)[1], y = cumulative_IGR_backwards[1]), color = "red", size = 3) +  # Add red dot for cumulative sum of contributions representing the value of the invasion growth rate
-  theme_classic() +  
-  labs(x = "Mechanism", y = "Invasion Growth Rate") +
-  ggtitle(expression("Decomposition of C"[2]~"at -C"[2]~'Community'))+
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) + 
-  scale_y_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6)) +
-  theme(
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 14, face = "bold"),   
-    plot.title = element_text(size = 14, face = "bold"), 
-    legend.position = "none" 
-  )
+# # plot
+# ggplot(inv.df, aes(x = Mechanism, y = IGR)) +
+#   geom_bar(stat = "identity", width = 0.7, fill = "lightgrey", color = "black") +
+#   coord_flip() +  
+#   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +
+#   geom_line(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, group = 1), color = "black", size = 1) +  # Add cumulative sum line starting from baseline
+#   # geom_text(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, label = round(cumulative_IGR_backwards, 2)), 
+#   #           color = "black", hjust = -0.8, size = 4.5) +  # Add labels next to each point on the cumulative sum line
+#   geom_point(aes(x = as.numeric(Mechanism)[1], y = cumulative_IGR_backwards[1]), color = "red", size = 3) +  # Add red dot for cumulative sum of contributions representing the value of the invasion growth rate
+#   theme_classic() +  
+#   labs(x = "Mechanism", y = "Invasion Growth Rate") +
+#   ggtitle(expression("Decomposition of C"[2]~"at -C"[2]~'Community'))+
+#   scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) + 
+#   scale_y_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6)) +
+#   theme(
+#     axis.text = element_text(size = 12),
+#     axis.title = element_text(size = 14, face = "bold"),   
+#     plot.title = element_text(size = 14, face = "bold"), 
+#     legend.position = "none" 
+#   )
 
 #----------------------------------------------------------------------------------------------------
 
@@ -570,33 +570,35 @@ df$Mechanism <- factor(df$Mechanism, levels = c("Interaction between resource fl
 # create cumulative sum
 df$cumulative_IGR_backwards <- rev(cumsum(rev(df$IGR)))
 
-# plot
-ggplot(df, aes(x = Mechanism, y = IGR)) +
-  geom_bar(stat = "identity", width = 0.7, fill = "lightgrey", color = "black") +
-  coord_flip() +  
-  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +
-  geom_line(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, group = 1), color = "black", size = 1) +  # Add cumulative sum line starting from baseline
-  # geom_text(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, label = round(cumulative_IGR_backwards, 2)), 
-  #           color = "black", hjust = -0.7, size = 4.5) +  # Add labels next to each point on the cumulative sum line
-  geom_point(aes(x = as.numeric(Mechanism)[1], y = cumulative_IGR_backwards[1]), color = "red", size = 3) +  # Add red dot for cumulative sum of contributions representing the value of the invasion growth rate
-  theme_classic() +  
-  labs(x = "Mechanism", y = "Invasion Growth Rate") +
-  ggtitle(expression("Decomposition of C"[2]~"at -P community")) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) + 
-  scale_y_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6)) +
-  theme(
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 14, face = "bold"),   
-    plot.title = element_text(size = 14, face = "bold"), 
-    legend.position = "none" 
-  )
+# # plot
+# ggplot(df, aes(x = Mechanism, y = IGR)) +
+#   geom_bar(stat = "identity", width = 0.7, fill = "lightgrey", color = "black") +
+#   coord_flip() +  
+#   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +
+#   geom_line(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, group = 1), color = "black", size = 1) +  # Add cumulative sum line starting from baseline
+#   # geom_text(aes(x = as.numeric(Mechanism), y = cumulative_IGR_backwards, label = round(cumulative_IGR_backwards, 2)), 
+#   #           color = "black", hjust = -0.7, size = 4.5) +  # Add labels next to each point on the cumulative sum line
+#   geom_point(aes(x = as.numeric(Mechanism)[1], y = cumulative_IGR_backwards[1]), color = "red", size = 3) +  # Add red dot for cumulative sum of contributions representing the value of the invasion growth rate
+#   theme_classic() +  
+#   labs(x = "Mechanism", y = "Invasion Growth Rate") +
+#   ggtitle(expression("Decomposition of C"[2]~"at -P community")) +
+#   scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) + 
+#   scale_y_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6)) +
+#   theme(
+#     axis.text = element_text(size = 12),
+#     axis.title = element_text(size = 14, face = "bold"),   
+#     plot.title = element_text(size = 14, face = "bold"), 
+#     legend.position = "none" 
+#   )
 
 ###################################################################################################################
 
+# create dataframe for final plotting
 total.df = as.data.frame(inv.df$Mechanism)
 colnames(total.df) = 'Mechanism'
 total.df$minusi.comm.IGR = inv.df$IGR
 
+# find mechanisms shared between two communities
 matchindices = inv.df$Mechanism %in% df$Mechanism
 alter = numeric(length(matchindices))
 
@@ -606,10 +608,10 @@ igr_indices = seq_along(df$IGR)
 alter[trueindices] = df$IGR[seq_along(trueindices)]
 total.df$secext.comm.IGR = alter
 
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(stringr)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(stringr)
 
 # Reshape the dataframe to a long format
 total_long <- total.df %>%

@@ -1,13 +1,14 @@
-### secondary extinction for perennial plant system lotka volterra
+### Figure 3 & 4
 ### Author: Joe Brennan
 
-library(deSolve)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
+require(deSolve)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
 
 # Figure 3a. Disassembly graph for the grassland community.
 
+# empirically parameterized values from Geijzendorffer et al
 spring.b = c(100.77, 45.19, 103.43, 67.09, 112.71, 76.52)/1000
 spring.A = -rbind(c(1.28, -0.15, -0.10, -0.22, 0.16, -0.12),
                   c(-0.13, 0.41, 0.12, 0.09, -0.03, 0),
@@ -16,6 +17,7 @@ spring.A = -rbind(c(1.28, -0.15, -0.10, -0.22, 0.16, -0.12),
                   c(0.39, 0.15, 0.82, 0.72, 0.8, -0.78),
                   c(0.02, 0.18, 0.05, 0.13, 0.57, 0.56))
 
+# only focus on subset of the species
 interest.spp = c(1,2,3,5,6)
 
 A = spring.A[interest.spp, interest.spp]
@@ -296,6 +298,7 @@ df <- as.data.frame(ext.out$x) %>%
 
 species_colors <- c('darkorange', 'darkgreen', 'purple', 'darkblue', 'cornflowerblue')
 
+# plot dynamics
 ggplot(df, aes(x = time, y = density, color = Species)) +
   scale_color_manual(
     values = species_colors,
@@ -329,6 +332,7 @@ df <- as.data.frame(ext.out$x) %>%
 
 species_colors <- c('darkorange', 'darkgreen', 'purple', 'darkblue', 'cornflowerblue')
 
+# plot dynamics
 ggplot(df, aes(x = time, y = density, color = Species)) +
   scale_color_manual(
     values = species_colors,
@@ -353,10 +357,10 @@ ggplot(df, aes(x = time, y = density, color = Species)) +
 ### Figure 4
 ### Author: Joe Brennan
 
-# Figure 2a. Decomposition of T. pratense
+# Figure 4a. Decomposition of T. pratense
 
-library(ggplot2)
-library(stringr)
+require(ggplot2)
+require(stringr)
 
 # Invasion growth rate calculations
 IGR <- function(A,b,res.eq){
@@ -526,10 +530,12 @@ inv.df$Mechanism <- factor(inv.df$Mechanism, levels = c('Baseline',
 
 ##################
 
+# prepare dataframe for plotting
 total.df = as.data.frame(inv.df$Mechanism)
 colnames(total.df) = 'Mechanism'
 total.df$minusi.comm.IGR = inv.df$IGR
 
+# find shared mechanisms
 matchindices = inv.df$Mechanism %in% df$Mechanism
 alter = numeric(length(matchindices))
 
@@ -539,10 +545,10 @@ igr_indices = seq_along(df$IGR)
 alter[trueindices] = df$IGR[seq_along(trueindices)]
 total.df$secext.comm.IGR = alter
 
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(stringr)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(stringr)
 
 # Reshape the dataframe to a long format
 total_long <- total.df %>%
@@ -598,12 +604,15 @@ ggplot(total_long, aes(x = Mechanism, y = IGR, fill = IGR_Type)) +
     axis.ticks.y.right = element_blank()
   )
 
+# bin based on type of interaction
+
 baseline = total.df[1,c(2,3)]
 comp.on.tpratense = colSums(total.df[c(4,7,10),c(2,3)])
 facil.on.tpratense = (total.df[c(13),c(2,3)])
 comp.on.competitors = colSums(total.df[c(3,6,9,12),c(2,3)])
 facil.on.competitors = colSums(total.df[c(2,5,8,11),c(2,3)])
 
+# create new dataframe with respective groups
 new.df = data.frame(Mechanism = c('Baseline', 'Competition on T. pratense', 'Facilitation on T. pratense', 'Competition on competitors', 'Facilitation on competitors'), minus.i.comm.IGR = as.numeric(c(baseline[1], comp.on.tpratense[1], facil.on.tpratense[1], comp.on.competitors[1], facil.on.competitors[1])), secext.comm.IGR = as.numeric(c(baseline[2], comp.on.tpratense[2], facil.on.tpratense[2], comp.on.competitors[2], facil.on.competitors[2])))
 
 total_long <- new.df %>%

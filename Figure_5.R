@@ -3,8 +3,8 @@
 
 ### Figure 5
 
-library(deSolve)
-library(igraph)
+require(deSolve)
+require(igraph)
 
 # A. Create disassembly graph.
 # Code adapted from Shoemaker et al, 2020
@@ -552,8 +552,8 @@ new.out = rbind(out, newout)
 colnames(new.out) = c('Time', 'P', 'C_1', 'C_2', 'R')
 
 # read in libraries needed
-library(tidyverse)
-library(scales)
+require(tidyverse)
+require(scales)
 
 # create dataframe for plotting
 df <- new.out[3000:7000,] %>%
