@@ -342,8 +342,8 @@ C2_final_mechanisms <- c(C2_delta_R_JC1, C2_delta_JC1, C2_delta_omega, C2_delta_
 
 # Create dataframe for plotting
 inv.df <- data.frame(
-  Mechanism = c("Interaction between resource fluctuations and competitor 1 resource intake", 
-                'Competitor 1 resource intake', 
+  Mechanism = c("Interaction between resource fluctuations and competitor 1 resource utilization", 
+                'Competitor 1 resource utilization', 
                 "Predator preference", 
                 "Resource fluctuations", 
                 "Baseline"),
@@ -351,8 +351,8 @@ inv.df <- data.frame(
 )
 
 # fix order of interactions
-inv.df$Mechanism <- factor(inv.df$Mechanism, levels = c("Interaction between resource fluctuations and competitor 1 resource intake", 
-                                                'Competitor 1 resource intake', 
+inv.df$Mechanism <- factor(inv.df$Mechanism, levels = c("Interaction between resource fluctuations and competitor 1 resource utilization", 
+                                                'Competitor 1 resource utilization', 
                                                 "Predator preference", 
                                                 "Resource fluctuations", 
                                                 "Baseline"))
@@ -554,16 +554,16 @@ C2_final_mechanisms <- c(C2_delta_R_JC1, C2_delta_JC1, C2_delta_R, C2_delta_0)
 
 # Create dataframe for plotting
 df <- data.frame(
-  Mechanism = c("Interaction between resource fluctuations and competitor 1 resource intake", 
-                'Competitor 1 resource intake', 
+  Mechanism = c("Interaction between resource fluctuations and competitor 1 resource utilization", 
+                'Competitor 1 resource utilization', 
                 "Resource fluctuations", 
                 "Baseline"),
   IGR = C2_final_mechanisms
 )
 
 # fix order of interactions
-df$Mechanism <- factor(df$Mechanism, levels = c("Interaction between resource fluctuations and competitor 1 resource intake", 
-                                                'Competitor 1 resource intake', 
+df$Mechanism <- factor(df$Mechanism, levels = c("Interaction between resource fluctuations and competitor 1 resource utilization", 
+                                                'Competitor 1 resource utilization', 
                                                 "Resource fluctuations", 
                                                 "Baseline"))
 
