@@ -453,7 +453,7 @@ decomposition.particular.spp <- function(A, b, res, inv, avg = F, spp.compare){
   return(list(IGR = orig.IGR,decomposition=df))
 }
 
-# Do decomposition of P. lanceolata at -A. stolonifera community
+# Do decomposition of T. pratense at -T. repens community
 decomp = decomposition.particular.spp(A,b,res=c(1,2,3), inv=4, avg=F, spp.compare = c(1,2,3)) # only compare IGR to resident species who have competitive effect on species 4
 
 # Extract non-zero contributions
@@ -641,7 +641,7 @@ ggplot(total_long, aes(x = Mechanism, y = IGR, fill = IGR_Type)) +
   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +
   geom_vline(xintercept = cumulative_igr_position + 0.5, linetype = "dotted", color = "black", size = 0.7) +
   theme_classic() +  
-  labs(x = "Mechanism", y = "Invasion Growth Rate", fill = "Community") +
+  labs(x = "Mechanism", y = "Invasion Growth Rate of T. pratense", fill = "Community") +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) + 
   scale_fill_manual(values = c("minus.i.comm.IGR" = "#fec488", "secext.comm.IGR" = "#e44f64"),  
                     labels = c("minus.i.comm.IGR" = "-T. pratense", "secext.comm.IGR" = "-T. repens")) +
